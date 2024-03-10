@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Win
   - Lose
+  - ImageLock
   layers:
   - Default
   - TransparentFX

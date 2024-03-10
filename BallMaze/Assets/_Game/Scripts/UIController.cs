@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class UIController : MonoBehaviour
     private GameController gameController;
     public GameObject panelGame,panelFinishGame,panelPause;
     public bool winGame;
+    public int nextSceneLoad;
     void Start()
     {
         gameController=FindObjectOfType<GameController>();
         panelFinishGame.gameObject.SetActive(false);
         panelGame.gameObject.SetActive(true);
         winGame=false;
+        nextSceneLoad=SceneManager.GetActiveScene().buildIndex+1;
         
     }
     void Update()
@@ -29,6 +32,10 @@ public class UIController : MonoBehaviour
         txtFinalTime.text = ConverterTempo(gameController.finalTime);//gameController.finalTime.ToString("00:00");
         panelFinishGame.gameObject.SetActive(true);
         panelGame.gameObject.SetActive(false);
+
+        if(nextSceneLoad> PlayerPrefs.GetInt("levelAt")){
+            PlayerPrefs.SetInt("levelAt",nextSceneLoad);
+        }
     }
 
     private void UpdateText()
@@ -64,5 +71,13 @@ public class UIController : MonoBehaviour
     public void ButtonMainMenu(){
 
         Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
+    }
+    public void ButtonNextLevel(){
+        if(SceneManager.GetActiveScene().buildIndex==30){
+            SceneManager.LoadScene(0);
+        }else{
+        SceneManager.LoadScene(nextSceneLoad);
+        }
     }
 }
